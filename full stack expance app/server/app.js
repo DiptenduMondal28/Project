@@ -21,7 +21,7 @@ const purchase=require('./router/purchase');
 const premiumUser=require('./router/premiumuserrouter')
 const forgotPassword=require('./router/forgotPasswordRouter')
 
-//modules import 
+//file import 
 const User = require('./module/signupModule');
 const Expence = require('./module/module');
 const Order=require('./module/puchase');
@@ -67,7 +67,7 @@ User.hasMany(UrlModule);
 UrlModule.belongsTo(User);
 
 sequelize.sync().then(result=>{
-    console.log("sync")
+    console.log("sync s")
     app.listen(process.env.PORT);
 }).catch(err=>{
     console.log(err);

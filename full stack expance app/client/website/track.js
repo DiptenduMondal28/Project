@@ -4,9 +4,9 @@ window.addEventListener('DOMContentLoaded',async()=>{
     console.log('objUrlParams',objUrlParams);
     console.log('page',page)
     const token = localStorage.getItem('token')
-    const itemNo=document.getElementById('datashowno').value;
-    const itemNoNumeric=Number(itemNo)
-    localStorage.setItem('itemNo',itemNoNumeric)
+    // const itemNo=document.getElementById('datashowno').value;
+    // const itemNoNumeric=Number(itemNo)
+    // localStorage.setItem('itemNo',itemNoNumeric)
     let finalItemNo=localStorage.getItem('itemNo')
     let detail =await axios.get(`http://localhost:3000/getexpence?page=${page}`,{headers:{'Authorization':token},params:{ITEMS_PER_PAGE:finalItemNo}}).then(({data:{expence,...PageData}})=>{
         console.log(expence);
@@ -81,6 +81,7 @@ async function showDelete(detail){
     let deleteKey=document.createElement('input');
     deleteKey.type='button';
     deleteKey.value='delete';
+    deleteKey.id="deletekey";
     deleteKey.onclick=()=>{
         const token = localStorage.getItem('token')
         let element = axios.delete(`http://localhost:3000/deletadata/${detail.id}`,{headers:{'Authorization':token}});
@@ -174,7 +175,7 @@ async function premiumfeature(result){
     downloadExpece.value='download list';
     downloadExpece.onclick=async()=>{
         const token=localStorage.getItem('token');
-        const file=await axios.get('http://localhost:3000/premium/download',{headers:{'Authorization':token}}).then(response=>{
+        const file=await axios.get('http://localhost:3000/premium/downloadexpence',{headers:{'Authorization':token}}).then(response=>{
             if(response.status===200){
                 var a = document.createElement('a');
                 a.href=response.data.fileUrl;
@@ -190,10 +191,9 @@ async function premiumfeature(result){
     premium.appendChild(downloadExpece);
 }
 
-async function datashowno(e){
-    const updateValue=document.getElementById('datashowno').value;
-    console.log('update value:',updateValue)
-    const itemNoNumeric=Number(updateValue)
+const item=document.getElementById('itemButton')
+item.addEventListener('click',()=>{
+    const itemNo=document.getElementById('datashowno').value;
+    const itemNoNumeric=Number(itemNo)
     localStorage.setItem('itemNo',itemNoNumeric)
-    let finalItemNo=localStorage.getItem('itemNo')
-}
+})

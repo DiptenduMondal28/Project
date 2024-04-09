@@ -9,6 +9,7 @@ function generateAccessToken(id,name){
 module.exports.login=async(req,res,next)=>{
         const email=req.body.email;
         const password=req.body.password;
+        console.log(req)
         const credentialCheck=await findCredential.findCredential(req,email).then(user =>{
             if(user.length>0){
                 bcrypt.compare(password,user[0].password,(err,result)=>{

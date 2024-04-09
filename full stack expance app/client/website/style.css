@@ -142,3 +142,29 @@ header {
   font-family: 'Alkatra', cursive;
   
 }
+
+#itemButton{
+  background-color: rgb(68, 68, 235);
+  color: white;
+  padding: 5px 10px;
+  font-size: 16px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+#itemButton:hover{
+  background-color: rgb(45, 45, 236);
+}
+
+#deletekey{
+  background-color: #ff4d4d; /* Red background color */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  font-size: 14px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+#deletekey:hover {
+  background-color: #ff3333; /* Darker red on hover */
+}

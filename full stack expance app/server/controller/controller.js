@@ -38,10 +38,8 @@ module.exports.dataupload=async(req,res,next)=>{
     }
 }
 
-//const ITEMS_PER_PAGE=4;
 module.exports.getdata=async(req,res,next)=>{
     let ITEMS_PER_PAGE=Number(req.query.ITEMS_PER_PAGE);
-    //console.log(typeof(req.query.ITEMS_PER_PAGE))
     console.log(req.user.id)
     let page=Number(req.query.page) || 1;
     let totalItems;
@@ -64,14 +62,6 @@ module.exports.getdata=async(req,res,next)=>{
         })
     }).catch(err=>console.log(err))
 
-    // const expence=await Expence.getExpences(req)
-
-    // try{
-    //     res.send(expence);
-    // }catch(err){
-    //     console.log(err)
-    //     res.send(err);
-    // }
 }
 
 
