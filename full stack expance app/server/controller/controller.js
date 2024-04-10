@@ -15,7 +15,7 @@ module.exports.dataupload=async(req,res,next)=>{
             return res.status(400).json({success:false,message:'expence parameter missing'})
         }
         try{
-            await User.create({
+            await User.create({// create expence
                 name:name,
                 exp:exp,
                 item:item,
@@ -45,9 +45,9 @@ module.exports.getdata=async(req,res,next)=>{
     let totalItems;
     await User.count({where:{userId:req.user.id}}).then((total)=>{
         totalItems=total;
-        return User.findAll({
-            offset:(page-1)*4,
-            limit:ITEMS_PER_PAGE,
+        return User.findAll({//find all the expense 
+            offset:(page-1)*4,//skip from top
+            limit:ITEMS_PER_PAGE,//limt the data
             where:{userId:req.user.id}
         });
     }).then((expence)=>{
@@ -75,7 +75,7 @@ module.exports.deletedata=async(req,res,next)=>{
     console.log("exp:"+req.user.totalexpence)
     
     try{
-        const deleteid=await Expence.getId(id);
+        const deleteid=await Expence.getId(id);//get that id which one i want to delete
         if (!deleteid) {
             return res.status(404).json({ success: false, message: 'Data not found' });
         }
@@ -86,9 +86,9 @@ module.exports.deletedata=async(req,res,next)=>{
 
         try{
 
-            await deleteid.destroy({where:{userID:req.user.id},transaction:t});
-            const totalExpence=Number(req.user.totalexpence)-Number(deleteid.exp);
-            await Credential.update({totalexpence:totalExpence},{where:{id:req.user.id},transaction: t});
+            await deleteid.destroy({where:{userID:req.user.id},transaction:t});//delete from data base
+            const totalExpence=Number(req.user.totalexpence)-Number(deleteid.exp);//cut expence from actual data
+            await Credential.update({totalexpence:totalExpence},{where:{id:req.user.id},transaction: t});//update that credential in data bse
             await t.commit();
 
         }catch(err){

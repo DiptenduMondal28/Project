@@ -60,14 +60,6 @@ module.exports.updatetransactionstatus=async(req,res,next)=>{
             return res.status(500).json({ success: false, message: 'Transaction update failed' });
         })
         }
-        //const promise1=await order.update({paymentid:payment_id,status:'SUCCESSFUL'})
-        // const promise2 = await req.user.update({ispremiumuser:true})
-        // Promise.all([promise1,promise2]).then(()=>{
-        //     return res.status(202).json({success:true,message:'transaction successfull'});
-        // }).catch(err=>{
-        //     console.log(err)
-        //     return res.status(500).json({ success: false, message: 'Transaction update failed' });
-        // })
                 
     }catch(err){
         console.log(err)

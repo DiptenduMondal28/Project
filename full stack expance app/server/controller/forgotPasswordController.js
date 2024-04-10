@@ -6,7 +6,7 @@ const Forgotpassword=require('../module/forgotPasswordRequestModule')
 const bcrypt=require('bcrypt')
 
 
-module.exports.forgotPassword=async(req,res,next)=>{
+module.exports.forgotPassword=async(req,res,next)=>{//forgot password
 
 
     const forgotUserEmail=req.body.email;
@@ -59,7 +59,7 @@ module.exports.forgotPassword=async(req,res,next)=>{
    
 }
 
-module.exports.resetpassword=async(req,res,next)=>{
+module.exports.resetpassword=async(req,res,next)=>{//send the email
     const id=req.params.id;
     Forgotpassword.findOne({where:{id}}).then(forgotrequestpassword=>{
         if(forgotrequestpassword){
@@ -84,7 +84,7 @@ module.exports.resetpassword=async(req,res,next)=>{
     })
 }
 
-module.exports.updatepassword=async(req,res,next)=>{
+module.exports.updatepassword=async(req,res,next)=>{//update new password
     try{
         const {newpassword}=req.query;
         const {resetpasswordid}=req.params;

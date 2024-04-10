@@ -7,7 +7,7 @@ const urlAddOnDataBase=require('../module/urlDownloadData')
 
 
 
-module.exports.userleaderboard=async(req,res,next)=>{
+module.exports.userleaderboard=async(req,res,next)=>{//send data accordingly user total expense
     try{
         console.log("leader bioard")
         const users= await PremiumUser.leaderBoard();

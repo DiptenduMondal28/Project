@@ -18,7 +18,7 @@ module.exports.signup=async(req,res,next)=>{
         }
         bcrypt.hash(password,10,async(err,hash)=>{
             console.log(err)
-            await Credential.create({
+            await Credential.create({//use create a new user
                 name,email,password:hash
             }).then(()=>{
                 res.status(201).json({message:'successfully created a profile'})
