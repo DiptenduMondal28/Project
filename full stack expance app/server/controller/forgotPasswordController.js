@@ -10,6 +10,7 @@ module.exports.forgotPassword=async(req,res,next)=>{
 
 
     const forgotUserEmail=req.body.email;
+    console.log(forgotUserEmail)
 
     const user=await User.findOne({where:{email:forgotUserEmail}})
     

@@ -24,13 +24,7 @@ module.exports.signup=async(req,res,next)=>{
                 res.status(201).json({message:'successfully created a profile'})
             })
         })
-        // const credential=await Credential.create({
-        //     name:name,
-        //     email:email,
-        //     password:password
-        // }).then(()=>{
-        //     res.status(201).json({message:'successfully created a profile'})
-        // })
+        
         
     }catch(err){
        res.status(500).json(err)

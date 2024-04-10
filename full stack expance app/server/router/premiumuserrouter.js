@@ -8,7 +8,7 @@ const controller=require('../controller/premiumusercontroller');
 router.get('/leaderboard',authentication.authenticate,controller.userleaderboard);
 
 //get download file
-router.get('/download',authentication.authenticate,controller.download)
+router.get('/downloadexpence',authentication.authenticate,controller.downloadexpence)
 
 
 module.exports=router;

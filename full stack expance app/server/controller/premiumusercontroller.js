@@ -1,41 +1,15 @@
-const AWSS3service = require('../service/S3services')
 const PremiumUser=require('../service/userPremium');
-const AWS=require('aws-sdk');
 const dotnev=require('dotenv').config();
+const fs=require('fs')
+const cloudinaryUpload=require('../service/cloudservices');
+const cloudinaryServices = require('../service/cloudservices');
+const urlAddOnDataBase=require('../module/urlDownloadData')
 
 
-async function uploadToS3(data,filename){
-    const BUCKET_NAME=process.env.AWS_BUCKET_NAME;
-    const IAM_USER_KEY=process.env.AWS_ACCESS_KEY;
-    const IAM_USER_SECRET=process.env.AWS_SECRET_KEY;
-
-    let s3bucket=new AWS.S3({
-        accessKeyId:IAM_USER_KEY,
-        secretAccessKey:IAM_USER_SECRET,
-        //Bucket:BUCKET_NAME
-    })
-    var params={
-        Bucket:BUCKET_NAME,
-        Key:filename,
-        Body:data,
-        ACL:'public-read'
-    }
-
-    return new Promise((resolve,reject)=>{
-        s3bucket.upload(params,(err,response)=>{
-            if(err){
-                console.log("something wrong with upload data in s3 create bucket:",err)
-                reject(err)
-            }else{
-                console.log("success:",response);
-                resolve(response.Location);
-            }
-        })
-    })
-}
 
 module.exports.userleaderboard=async(req,res,next)=>{
     try{
+        console.log("leader bioard")
         const users= await PremiumUser.leaderBoard();
         console.log(users)
         res.status(200).json(users)
@@ -46,19 +20,27 @@ module.exports.userleaderboard=async(req,res,next)=>{
     }
 }
 
-module.exports.download=async(req,res,next)=>{
+
+module.exports.downloadexpence=async(req,res,next)=>{
     try{
-        const expenses=await PremiumUser.download(req);
-        console.log(("user expence download:"))
-        console.log(expenses);
-        const stringfiExpences=JSON.stringify(expenses);
-        const userID=req.user.id;
-        const filename=`Expense${userID}${new Date()}.txt`;
-        const fileUrl = await uploadToS3(stringfiExpences,filename);
-        const filecreated=PremiumUser.urlAddOnDataBase(userID,fileUrl);
+        const userID=req.user.id
+        const userName=req.user.name
+        console.log("userId"+userID+"user name"+userName)
+        const userExpence = await PremiumUser.download(userID);//get the full array of expence of user
+        const expenceArray=userExpence.map(exp=>exp.dataValues)//map only those element of array from database 
+        const filterArray=await PremiumUser.finalArrayForCsv(expenceArray);//filter the element which will need of an user
+        const csvFile=await PremiumUser.csvFileGenerator(filterArray)//make the csv file of that filtered expence array
+        const filename=`Expense_${userID}-${userName}/${new Date()}.csv`;//name of that file in cloud
+        const fileUrl=await cloudinaryServices(csvFile,filename);//we will get fileUrl from cloudinary
+        //file url store in our own data base
+        await urlAddOnDataBase.create({
+            url:fileUrl,
+            userId:userID
+        })
         res.status(200).json({fileUrl,success:true})
-    }catch(err){
-        console.log(err)
-        res.status(500).json({fileUrl:'',success:false,error:err})
+    }catch(error){
+        console.log(error);
+        res.status(500).json({fileUrl:" ",error:error})
     }
+    
 }
